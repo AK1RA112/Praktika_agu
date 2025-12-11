@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет успеваемости</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>Система учета успеваемости</h1>
+        <p>Учебное заведение "Знание"</p>
+    </div>
+    
+    <div class="buttons-container">
+        <button id="btn-add-student"> Добавить студента</button>
+        <button id="btn-add-subject"> Добавить предмет</button>
+        <button id="btn-add-record"> Добавить запись</button>
+        <button id="btn-show-analytics"> Аналитика и отчеты</button>
+    </div>
+    
+    <div class="table-container">
+        <h2>Текущие данные</h2>
+        <table id="dataTable">
+            <thead>
+                <tr>
+                    <th>Тип</th>
+                    <th>Студент</th>
+                    <th>Группа</th>
+                    <th>Предмет</th>
+                    <th>Оценка</th>
+                    <th>Посещаемость</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Данные будут добавлены через JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Модальное окно: добавить студента -->
+    <div id="modal-student" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Добавить студента</h2>
+            <form id="form-student">
+                <div class="form-group">
+                    <label for="studentName">ФИО студента:</label>
+                    <input type="text" id="studentName" required placeholder="Иванов Иван Иванович">
+                </div>
+                <div class="form-group">
+                    <label for="studentGroup">Группа:</label>
+                    <input type="text" id="studentGroup" required placeholder="1235">
+                </div>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: добавить предмет -->
+    <div id="modal-subject" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Добавить предмет</h2>
+            <form id="form-subject">
+                <div class="form-group">
+                    <label for="subjectName">Название предмета:</label>
+                    <input type="text" id="subjectName" required placeholder="Программирование">
+                </div>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: добавить запись -->
+    <div id="modal-record" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Добавить запись по успеваемости</h2>
+            <form id="form-record">
+                <div class="form-group">
+                    <label for="studentSelect">Студент:</label>
+                    <select id="studentSelect" required>
+                        <option value="">Выберите студента</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="subjectSelect">Предмет:</label>
+                    <select id="subjectSelect" required>
+                        <option value="">Выберите предмет</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="recordDate">Дата:</label>
+                    <input type="date" id="recordDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gradeValue">Оценка (необязательно):</label>
+                    <input type="number" id="gradeValue" min="1" max="5" placeholder="1–5">
+                    <small>Оставьте пустым, если оценка не ставилась</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="attendanceStatus">Посещаемость (обязательно):</label>
+                    <select id="attendanceStatus" required>
+                        <option value="">— Выберите посещаемость —</option>
+                        <option value="Присутствовал">Присутствовал</option>
+                         <option value="Н">Н — неизвестно</option>
+                         <option value="НО">НО — опоздал</option>
+                         <option value="НБ">НБ — по болезни</option>
+                         <option value="НП">НП — по приказу</option>
+                    </select>
+                </div>
+
+                <button type="submit">Сохранить запись</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: аналитика -->
+    <div id="modal-analytics" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Аналитика по группам</h2>
+            <div class="form-group">
+                <label for="groupSelect">Выберите группу:</label>
+                <select id="groupSelect">
+                    <option value="">Все группы</option>
+                </select>
+            </div>
+            <button id="btn-run-analytics">Показать аналитику</button>
+            
+            <div class="analytics-container hidden" id="analyticsContainer">
+                <h3>Результаты анализа</h3>
+                <div class="analytics-item">
+                    <strong>Средний балл:</strong> <span id="averageGrade">-</span>
+                </div>
+                <div class="analytics-item">
+                    <strong>Посещаемость:</strong> <span id="attendanceRate">-</span>
+                </div>
+                <div class="analytics-item">
+                    <strong>Студентов:</strong> <span id="studentCount">-</span>
+                </div>
+                <div class="analytics-item">
+                    <strong>Предметов:</strong> <span id="subjectCount">-</span>
+                </div>
+                <div class="analytics-item">
+                    <strong>Записей:</strong> <span id="totalRecords">-</span>
+                </div>
+                <div class="analytics-item">
+                    <strong>Оценок:</strong> <span id="totalGrades">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Подключение JS в порядке зависимостей -->
+    <script src="data.js"></script>
+    <script src="input-student-subject.js"></script>
+    <script src="input-grades.js"></script>
+    <script src="analytics.js"></script>
+</body>
+</html>
