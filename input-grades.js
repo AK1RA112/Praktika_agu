@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Группа
             const groupCell = document.createElement('td');
-            groupCell.textContent = student.group;
+            groupCell.textContent = studt.group;
             row.appendChild(groupCell);
 
             // Предмет
